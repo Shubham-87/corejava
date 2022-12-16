@@ -6,13 +6,19 @@ import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import com.driverClasses.DriverClass;
 import com.exceptionClasses.InvalidArgumentsValueException;
 import com.operationInterfaces.TicketGeneratorInterface;
+import com.utility.Utility;
 
-public class TicketGenerator implements TicketGeneratorInterface {
+public class TicketGenerator /* implements TicketGeneratorInterface */ {
 
-@Override
-public int[][] generateTicket(int row, int column) throws InvalidArgumentsValueException {
+	private static Logger logger=Logger.getLogger(TicketGenerator.class.getName());
+	
+	public static int [][] ticket=new int[3][9];
+	
+	
+public static int[][] generateTicket(int row, int column) throws InvalidArgumentsValueException {
 	if((row>3||row<3)||(column>9||column<9)) {
 		throw new InvalidArgumentsValueException("Entered "+row+" Rows and "+column+" Columns. Expected 3 Rows and 9 Columns");
 		
@@ -45,9 +51,9 @@ public int[][] generateTicket(int row, int column) throws InvalidArgumentsValueE
 		
 			if((noOfElementsInRow<=4)&&(noOfElemenentsInColumn<=1&&tickit[rowIndex][columnIndex]==0)) {
 				//tickit[rowIndex][columnIndex]=generateRandomNumber(columnIndex*10+1, columnIndex*10+10);
-				int randomNo=generateRandomNumber(columnIndex*10+1, columnIndex*10+10);
+				int randomNo=Utility.generateRandomNumber(columnIndex*10+1, columnIndex*10+10);
 				while(elementsInTickit.containsKey(randomNo)) {
-					randomNo=generateRandomNumber(columnIndex*10+1, columnIndex*10+10);
+					randomNo=Utility.generateRandomNumber(columnIndex*10+1, columnIndex*10+10);
 				}
 				tickit[rowIndex][columnIndex]= randomNo;         //columnIndex*10+1+rowIndex;
 				elementsInTickit.put(randomNo, randomNo);
@@ -58,11 +64,22 @@ public int[][] generateTicket(int row, int column) throws InvalidArgumentsValueE
 			}
 		}
 	//System.out.println(numberOfElementsWritten+"\n"+rowMap+"\n"+columnMap);
-	return tickit;
+	
+	 ticket=tickit;
+	 return tickit;
 }
- public static int generateRandomNumber(int max ,int min) {
-	   return (int) (Math.random() * (max - min + 1) + min);
-   }
-  
+ 
+ 
+ public static void printTicket(int[][] ticket,int row ,int column) {
+	  //Logger.getLogger(TicketGeneratorInterface.class.getName()).info("Ticket :");
+	 System.out.println("--------------------Ticket---------------------"); 
+	 for (int i = 0; i < row; i++) {
+		 for(int j=0;j<column;j++) {
+			 System.out.print(ticket[i][j]+"\t");
+			
+		 }
+		 System.out.print("\n");
+	}
+}
 
 }
